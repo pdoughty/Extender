@@ -1,7 +1,7 @@
 enyo.kind({
 	name: "MyApps.Extender",
 	kind: enyo.VFlexBox,
-	components: [  
+	components: [
 	 {kind: "WebService", name: "testFeed", onSuccess: "testFeedSuccess", onFailure: "testFeedFailed"},
      {kind: "WebService", name: "grabFeed", onSuccess: "grabFeedSuccess", onFailure: "grabFeedFailed"},
      {kind: "Popup", name: "newFeedPopup", components: [
@@ -15,8 +15,7 @@ enyo.kind({
              {kind: enyo.Input, name: "newFeedURL", hint: "New Feed URL", autoCapitalize: "lowercase"}
          ]},
          {flex: 1, components: [
-             {kind: enyo.Button, onclick: "addNewFeed", caption: "Add Feed", className:
- "enyo-button-affirmative"}
+             {kind: enyo.Button, onclick: "addNewFeed", caption: "Add Feed", className: "enyo-button-affirmative"}
          ]}
      ]},
      {kind: "Popup", name: "feedFailurePopup", components: [
@@ -26,8 +25,7 @@ enyo.kind({
          ]},
          {kind: enyo.Button, caption: "OK", onclick: "closeFeedFailurePopup"}
      ]},
-     {kind: "SlidingPane", flex: 1, multiViewMinWidth: 480, onSelect: "paneSelected", name: "feedSlidingPane",
- components: [
+     {kind: "SlidingPane", flex: 1, multiViewMinWidth: 480, onSelect: "paneSelected", name: "feedSlidingPane", components: [
          {name: "FeedListPane", width: "320px", kind: "MyApps.FeedList", onListTap: "showFeed",
              onDeleteFeed: "deleteFeedItem", onNewFeedTap: "showAddNewFeedPopup"},
          {name: "feedItemsPane", width: "320px", peekWidth: 50, kind: "MyApps.FeedItems",
@@ -40,21 +38,21 @@ enyo.kind({
 ready: function() {
      this.feedList = localStorage.getItem("feedList");
      this.feedItems = [];
-     
+
      if (this.feedList == undefined) {
          this.feedList = [];
      } else {
          this.feedList = JSON.parse(this.feedList);
          this.$.FeedListPane.$.feedList.render();
      }
- }, 
+ },
 
 saveFeedList: function() {
      localStorage.setItem("feedList", JSON.stringify(this.feedList));
  },
  showAddNewFeedPopup: function() {
      this.$.newFeedPopup.openAtCenter();
- }, 
+ },
 
 addNewFeed: function() {
      var url = "http://query.yahooapis.com/v1/public/yql?q="
@@ -94,7 +92,7 @@ grabFeedSuccess: function(inSender, inResponse, inRequest) {
      this.feedItems = inResponse.query.results.item;
      this.$.feedItemsPane.$.feedItemsSpinner.hide();
      this.$.feedItemsPane.$.feedItems.render();
- }, 
+ },
 
 grabFeedFailed: function() {
      this.$.feedFailurePopup.openAtCenter();
@@ -103,7 +101,7 @@ grabFeedFailed: function() {
 
  showFeed: function(inSender, inEvent) {
      var r = this.feedList[inEvent.rowIndex];
- 
+
      if (r) {
          this.$.feedSlidingPane.selectView(this.$.feedItemsPane);
          this.$.feedItemsPane.$.selectedFeedName.setContent(r.title);
@@ -137,7 +135,7 @@ refreshFeedItemsList: function() {
 
 openFeedItem: function(inSender, inEvent) {
      var r = this.feedItems[inEvent.rowIndex];
- 
+
      if(r) {
          this.$.feedWebViewPane.$.selectedItemName.setContent(r.title);
          this.$.feedWebViewPane.$.currentFeedItemWebView.setUrl(r.link);
@@ -146,7 +144,7 @@ openFeedItem: function(inSender, inEvent) {
 
 openFeedItem: function(inSender, inEvent) {
      var r = this.feedItems[inEvent.rowIndex];
- 
+
      if(r) {
          this.$.feedWebViewPane.$.selectedItemName.setContent(r.title);
          this.$.feedWebViewPane.$.currentFeedItemWebView.setUrl(r.link);
@@ -156,6 +154,6 @@ openFeedItem: function(inSender, inEvent) {
 resizeWebView: function() {
      if (!!window.PalmSystem)
          this.$.feedWebViewPane.$.currentFeedItemWebView.resize();
- } 
+ }
 
 });

@@ -17,14 +17,31 @@ enyo.kind({
      {kind: enyo.GrabButton},
      {flex: 1},
      {icon: "images/menu-icon-refresh.png", onclick: "refreshWebView", align: "right"}, // Refresh Button
-     {icon: "images/print_icon_label.jpg", onclick: "openPrintDialog", align: "center"} // Print Button
-
+     {icon: "images/print_icon_label.jpg", onclick: "openPrintDialog", align: "center"}, // Print Button
+     {icon: "images/save_icon.jpg", onclick: "openSaveDialog", align: "left"} // Save Button
  ]},
+
+
+{kind: "Popup", name: "showSaveDialog", style: "width 500px; height 500px", components: [
+{
+	name: "savearticle",
+	className: "enyo-bg",
+	kind: "MyApps.ExtSaveArticle",
+	onReceive: "",
+	onSave: "",
+	onCancel: "closeSaveArticle"
+}
+]
+},
+
+// Print Dialog Box
  {name: "printDialog", kind: "PrintDialog",
          duplexOption: true,
          colorOption: true,
-         frameToPrint: {name:"", landscape:false},
+         frameToPrint: {name:"currentFeedItemWebView", landscape:false},
          appName: "Extender"}
+
+
 ],
 
 hideWebViewSpinner: function() {
@@ -41,5 +58,9 @@ refreshWebView: function() {
 
 openPrintDialog: function() {
 	this.$.printDialog.openAtCenter();  // Standard enyo.Popup method
+},
+openSaveDialog: function() {
+	this.$.showSaveDialog.openAtCenter();
 }
+
 });

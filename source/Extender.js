@@ -26,6 +26,19 @@ enyo.kind({
          ]},
          {kind: enyo.Button, caption: "OK", onclick: "closeFeedFailurePopup"}
      ]},
+// start of Prefs
+	{kind: "Popup", name: "showPreferencesPopup", style: "width: 600px; height: 1000px", components: [
+	{
+		name: "preferences",
+		className: "enyo-bg",
+		kind: "MyApps.ExtPrefs",
+		onReceive: "",
+		onSave: "savePreferences",
+		onCancel: "closePreferences"
+
+}
+]
+},
      {kind: "SlidingPane", flex: 1, multiViewMinWidth: 480, onSelect: "paneSelected", name: "feedSlidingPane",
  components: [
          {name: "FeedListPane", width: "320px", kind: "MyApps.FeedList", onListTap: "showFeed",
@@ -34,7 +47,15 @@ enyo.kind({
              onListTap: "openFeedItem", onRefreshTap: "refreshFeedItemsList"},
          {name: "feedWebViewPane", flex: 1, peekWidth: 100, kind: "MyApps.FeedWebView",
              onResize: "resizeWebView"}
-     ]}
+     ]},
+
+
+
+{kind: "AppMenu",
+	components: [
+		{caption: "Preferences", onclick: "showPreferences"},
+	]
+}
 ],
 
 ready: function() {
@@ -156,6 +177,18 @@ openFeedItem: function(inSender, inEvent) {
 resizeWebView: function() {
      if (!!window.PalmSystem)
          this.$.feedWebViewPane.$.currentFeedItemWebView.resize();
- } 
+ },
+
+showPreferences: function() {
+	this.$.showPreferencesPopup.openAtCenter();
+},
+
+closePreferences: function() {
+	this.$.showPreferencesPopup.close();
+},
+
+savePreferences: function() {
+	this.$.showPreferencesPopup.close();
+}
 
 });

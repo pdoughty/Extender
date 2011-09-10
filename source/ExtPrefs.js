@@ -28,7 +28,7 @@ enyo.kind({
           components: [
               {kind: "RowGroup", caption: "Instapaper Account Info", components: [
                   {name: "instapaperUsernameInput", kind: "Input", hint: "Username"},
-		  {name: "instapaperPasswordInput", kind: "PasswordInput", hint: "Password"}
+		  {name: "instapaperPasswordInput", kind: "Input", hint: "Password"}
               ]},
 	      {kind: "RowGroup", caption: "Other Preferences", components: [
 		  {name: "otherInput", kind: "Input"},
@@ -46,6 +46,10 @@ enyo.kind({
           ]
       },
   ],
+
+
+
+
   create: function() {
       this.inherited(arguments);
       this.$.getPreferencesCall.call(
@@ -53,8 +57,10 @@ enyo.kind({
           "keys": ["instapaperUsername", "instapaperPassword"]
       });
       // keep this updated with the value that's currently saved to the service
-      this.savedInstapaperUsername = "";
-      this.savedInstapaperPassword = "";
+      this.savedInstapaperUsername = localStorage.getItem("instapaperUsername");
+      this.savedInstapaperPassword = localStorage.getItem("instapaperPassword");
+
+
   },
   getPreferencesSuccess: function(inSender, inResponse) {
       this.savedInstapaperUsername = inResponse.instapaperUsername;
@@ -72,10 +78,12 @@ enyo.kind({
   setPreferencesFailure: function(inSender, inResponse) {
       console.log("got failure from setPreferences");
   },
-//  showingChanged: function() {
-      // reset contents of text input box to last saved value
-  //    this.$.defaultFeedInput.setValue(this.savedUrl);
- // },
+ showingChanged: function() {
+     // reset contents of text input box to last saved value
+	this.$.instapaperUsernameInput.setValue(this.newInstapaperUsername);
+	this.$.instapaperPasswordInput.setValue(this.newInstapaperPassword);
+  },
+
   saveClick: function(inSender, inEvent) {
       var newInstapaperUsernameValue = this.$.instapaperUsernameInput.getValue();
       this.$.setPreferencesCall.call(
@@ -84,6 +92,8 @@ enyo.kind({
       });
       this.savedInstapaperUsername = newInstapaperUsernameValue;
       this.doSave(newInstapaperUsernameValue);
+      localStorage.setItem("instapaperUsername", JSON.stringify(this.newInstapaperUsername));
+
 
       var newInstapaperPasswordValue = this.$.instapaperPasswordInput.getValue();
       this.$.setPreferencesCall.call(
@@ -92,7 +102,9 @@ enyo.kind({
       });
       this.savedInstapaperPasswordValue = newInstapaperPasswordValue;
       this.doSave(newInstapaperPasswordValue);
+      localStorage.setItem("instapaperPassword", JSON.stringify(this.newInstapaperPassword));
   },
+
   cancelClick: function() {
       this.doCancel();
   }

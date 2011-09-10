@@ -67,7 +67,9 @@ ready: function() {
      } else {
          this.feedList = JSON.parse(this.feedList);
          this.$.FeedListPane.$.feedList.render();
-     }
+  }
+
+
  }, 
 
 saveFeedList: function() {
@@ -154,15 +156,6 @@ refreshFeedItemsList: function() {
      }
      this.$.feedItemsPane.$.feedItemsSpinner.show();
      this.$.grabFeed.call();
- },
-
-openFeedItem: function(inSender, inEvent) {
-     var r = this.feedItems[inEvent.rowIndex];
- 
-     if(r) {
-         this.$.feedWebViewPane.$.selectedItemName.setContent(r.title);
-         this.$.feedWebViewPane.$.currentFeedItemWebView.setUrl(r.link);
-     }
  },
 
 openFeedItem: function(inSender, inEvent) {

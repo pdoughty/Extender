@@ -33,7 +33,6 @@ enyo.kind({
 } 
 ],
 
-
 instapaperButtonClick: function() {
 
 this.$.login.call({username: "", password: "", url: ""});
